@@ -10,7 +10,10 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Lista todas as tarefas.",
 	Run: func(c *cobra.Command, args []string) {
-		fmt.Println(Tasks)
+
+		for _, item := range Tasks.OrderById() {
+			fmt.Printf("%d | %s | %s | %s | %s\n", item.Id, item.Description, item.Status, item.CreatedAt, item.UpdatedAt)
+		}
 	},
 }
 

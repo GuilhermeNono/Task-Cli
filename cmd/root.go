@@ -14,14 +14,17 @@ var RootCmd = &cobra.Command{
 	Short: "Meu app de task-cli",
 }
 
-var Tasks []model.Task
+var Tasks = make(model.TaskMap)
 var NextId = 1
 
 func Execute(loadedTasks []model.Task) {
+
 	if len(loadedTasks) != 0 {
-		Tasks = loadedTasks
-		sort.Sort(model.ById(Tasks))
-		NextId = Tasks[len(Tasks)-1].Id + 1
+		sort.Sort(model.TaskSlice(loadedTasks))
+		NextId = loadedTasks[len(loadedTasks)-1].Id + 1
+		for _, item := range loadedTasks {
+			Tasks[item.Id] = item
+		}
 	}
 
 	if err := RootCmd.Execute(); err != nil {

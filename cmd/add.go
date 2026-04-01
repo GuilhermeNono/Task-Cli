@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"nono.guilherme/task-cli/model"
+	"nono.guilherme/task-cli/model/constants"
 )
 
 var AddCmd = &cobra.Command{
@@ -18,15 +19,17 @@ var AddCmd = &cobra.Command{
 			return
 		}
 
-		Tasks = append(Tasks, model.Task{
+		Tasks[NextId] = model.Task{
 			Id:          NextId,
 			Description: args[0],
-			Status:      "todo",
+			Status:      constants.Todo.String(),
 			CreatedAt:   time.Now(),
 			UpdatedAt:   time.Now(),
-		})
+		}
 
 		fmt.Printf("Task added successfully (ID: %d)\n", NextId)
+
+		NextId++
 	},
 }
 

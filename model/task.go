@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"sort"
+	"time"
+)
 
 type Task struct {
 	Id          int       `json:"id"`
@@ -10,8 +13,27 @@ type Task struct {
 	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
-type ById []Task
+type TaskSlice []Task
+type TaskMap map[int]Task
 
-func (a ById) Len() int           { return len(a) }
-func (a ById) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ById) Less(i, j int) bool { return a[i].Id < a[j].Id }
+func (s TaskSlice) Len() int           { return len(s) }
+func (s TaskSlice) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s TaskSlice) Less(i, j int) bool { return s[i].Id < s[j].Id }
+
+func (m TaskMap) OrderById() TaskSlice {
+	ids := make([]int, 0, len(m))
+
+	for id := range m {
+		ids = append(ids, id)
+	}
+
+	sort.Ints(ids)
+
+	var result []Task
+
+	for _, id := range ids {
+		result = append(result, m[id])
+	}
+
+	return result
+}

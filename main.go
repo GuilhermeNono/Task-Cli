@@ -20,7 +20,13 @@ func main() {
 
 	cmd.Execute(tasks)
 
-	if err := saveTasks(cmd.Tasks); err != nil {
+	var slice []model.Task
+
+	for _, item := range cmd.Tasks {
+		slice = append(slice, item)
+	}
+
+	if err := saveTasks(slice); err != nil {
 		panic(err)
 	}
 }
