@@ -1,54 +1,36 @@
 # ✅ Task CLI
 
-A lightweight command-line Task Tracker built in Go.
+A lightweight task tracker built with Go and Cobra.
 
-This project is based on the challenge described in `exercise.md`: track tasks, persist them in a local JSON file, and manage task lifecycle from the terminal.
+This project is a finished command-line application for creating, updating, listing, and deleting tasks from the terminal. Tasks are stored locally in a JSON file so the data persists between runs.
 
-## 🚀 Goals
+## ✨ Highlights
 
-- Track what you need to do (`todo`)
-- Track what is in progress (`in-progress`)
-- Track what is finished (`done`)
-- Persist everything in `tasks.json` in the current directory
-
-## 🧩 Current Status
-
-### Implemented
-
-- `add` command to create a task
-- `list` command to print tasks
-- `version` command
-- JSON persistence (`tasks.json`) using Go standard library
-
-### Planned (from challenge requirements)
-
-- `update <id> <description>`
-- `delete <id>`
-- `mark-in-progress <id>`
-- `mark-done <id>`
-- `list done`
-- `list todo`
-- `list in-progress`
+- 🚀 Simple terminal workflow for daily task tracking
+- 💾 Local persistence in `tasks.json`
+- 🧭 Cobra-based command structure
+- 📅 Automatic timestamps for creation and updates
+- 🔎 Optional status filtering when listing tasks
 
 ## 🛠️ Tech Stack
 
-- Go
-- `cobra` for CLI command structure
-- Native filesystem APIs (`os`, `encoding/json`) for persistence
+- [Go](https://go.dev/)
+- [Cobra](https://github.com/spf13/cobra) for CLI commands
+- Standard library packages for file handling and JSON serialization
 
 ## 📦 Project Structure
 
 ```text
 task-cli/
-├── cmd/            # CLI commands
-├── model/          # Task model and sorting helpers
-├── main.go         # Load tasks, execute CLI, save tasks
-└── tasks.json      # Auto-created data file
+├── cmd/              # CLI commands
+├── model/            # Task model, sorting, and status helpers
+├── main.go           # Load tasks, execute CLI, save tasks
+└── tasks.json        # Local data file created at runtime
 ```
 
-## ▶️ Running the project
+## 🚀 Getting Started
 
-You can run directly with Go:
+### Run with Go
 
 ```bash
 go run . version
@@ -56,7 +38,7 @@ go run . add "Buy groceries"
 go run . list
 ```
 
-Or build and run the binary:
+### Build the binary
 
 ```bash
 go build -o task-cli
@@ -65,30 +47,75 @@ go build -o task-cli
 ./task-cli list
 ```
 
-## 🧪 Command Examples
+## 🧭 Available Commands
+
+### `add <description>`
+
+Creates a new task with a unique ID, the `Todo` status, and timestamps.
 
 ```bash
-# Add a new task
-task-cli add "Buy groceries"
+task-cli add "Read a book"
+```
 
-# List all tasks
+### `list [status]`
+
+Lists all tasks in ascending ID order.
+
+You can also filter by status:
+
+- `Todo`
+- `InProgress`
+- `Done`
+
+```bash
 task-cli list
+task-cli list Todo
+task-cli list Done
+```
 
-# Show CLI version
+### `update <id> [description] --status <status>`
+
+Updates a task description and/or status.
+
+```bash
+task-cli update 1 "Read two chapters" --status Done
+task-cli update 2 --status InProgress
+```
+
+> Status values are case-sensitive and follow the CLI’s internal status names.
+
+### `delete <id>`
+
+Removes a task by ID.
+
+```bash
+task-cli delete 1
+```
+
+### `version`
+
+Prints the current CLI version.
+
+```bash
 task-cli version
 ```
 
-> Note: In the current implementation, `list` prints the in-memory slice structure. Output formatting can be improved in next iterations.
+## 🗂️ Task Storage
 
-## 🗂️ Task Data Model
+Tasks are persisted in a `tasks.json` file in the **current working directory**.
 
-Each task follows this schema:
+That means:
 
-- `id`: unique identifier
-- `description`: short task text
-- `status`: `todo` | `in-progress` | `done`
+- if you run the app inside the project folder, `tasks.json` is created there
+- if you run it from another folder, the JSON file is created in that folder instead
+
+Each task uses this model:
+
+- `id`: unique numeric identifier
+- `description`: task text
+- `status`: current task state
 - `createdAt`: creation timestamp
-- `updatedAt`: last update timestamp
+- `updatedAt`: last modification timestamp
 
 Example `tasks.json` entry:
 
@@ -97,33 +124,38 @@ Example `tasks.json` entry:
   {
     "id": 1,
     "description": "Buy groceries",
-    "status": "todo",
+    "status": "Todo",
     "createdAt": "2026-04-01T10:00:00Z",
     "updatedAt": "2026-04-01T10:00:00Z"
   }
 ]
 ```
 
-## ✅ Challenge Checklist
+## 🔄 How It Works
 
-- [x] CLI entry point
-- [x] Add task
-- [x] Basic list task
-- [x] JSON file persistence
-- [ ] Update task
-- [ ] Delete task
-- [ ] Mark task as in progress
-- [ ] Mark task as done
-- [ ] List by status filters
-- [ ] Better error handling and UX output
+1. The app loads existing tasks from `tasks.json`.
+2. Commands operate on the in-memory task collection.
+3. After the command finishes, the tasks are written back to disk.
+4. IDs are automatically incremented based on the highest existing ID.
 
-## 📌 Notes
+## 🤖 Continuous Integration
 
-- Data is stored in `tasks.json` in the current working directory.
-- The file is created automatically when needed.
-- The project follows a step-by-step implementation approach from the original challenge.
+A GitHub Actions workflow is configured in `.github/workflows/go.yml`.
+
+- Runs on `push` and `pull_request` to `master`
+- Uses Ubuntu latest
+- Builds the project
+- Runs the test suite
+
+## 📋 Notes
+
+- The project uses the MIT License.
+- `tasks.json` is meant to hold local development data and is created automatically when needed.
+- Status filters are case-sensitive.
 
 ---
 
-Built as a hands-on CLI practice project to strengthen filesystem, argument parsing, and Go application structure skills. 💡
+Built as a hands-on CLI project to practice filesystem access, argument parsing, sorting, and structured Go application design. 💡
+
+This project is part of a coding exercise from [Roadmap.SH | Task-Tracker](https://roadmap.sh/projects/task-tracker)
 
