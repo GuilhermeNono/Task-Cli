@@ -25,7 +25,7 @@ func init() {
 	RootCmd.AddCommand(updateCmd)
 }
 
-func command(c *cobra.Command, args []string) {
+func command(_ *cobra.Command, args []string) {
 	if len(args) == 0 {
 		fmt.Println("Por favor, informe um Id valido.")
 		return
@@ -49,7 +49,7 @@ func command(c *cobra.Command, args []string) {
 		updatedItem.Status = status
 	}
 
-	if args[1] == "" {
+	if len(args) == 1 {
 		updatedItem.Description = Tasks[id].Description
 	} else {
 		updatedItem.Description = args[1]

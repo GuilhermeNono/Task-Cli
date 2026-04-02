@@ -3,6 +3,8 @@ package model
 import (
 	"sort"
 	"time"
+
+	"nono.guilherme/task-cli/model/constants"
 )
 
 type Task struct {
@@ -33,6 +35,35 @@ func (m TaskMap) OrderById() TaskSlice {
 
 	for _, id := range ids {
 		result = append(result, m[id])
+	}
+
+	return result
+}
+
+func (s *TaskSlice) ByStatus(status constants.TaskStatus) *TaskSlice {
+	ids := make([]int, 0, len(*s))
+	newSlice := make(TaskSlice, 0)
+
+	for _, item := range *s {
+		if item.Status != status.String() {
+			continue
+		}
+
+		newSlice = append(newSlice, item)
+	}
+
+	*s = newSlice
+
+	for _, id := range *s {
+		ids = append(ids, id.Id)
+	}
+
+	sort.Ints(ids)
+
+	var result = &TaskSlice{}
+
+	for id := range ids {
+		*result = append(*result, (*s)[id])
 	}
 
 	return result

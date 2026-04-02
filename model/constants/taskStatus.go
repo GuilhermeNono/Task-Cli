@@ -22,12 +22,16 @@ func (ss TaskStatus) String() string {
 	return taskName[ss]
 }
 
-func (ss TaskStatus) ToConst(s string) (TaskStatus, error) {
+func ToConst(s string) (TaskStatus, error) {
 	switch s {
 	case "Done":
 		return Done, nil
 	case "InProgress":
 		return InProgress, nil
+	case "Todo":
+		return Todo, nil
+	case "None":
+		return None, nil
 	default:
 		return None,
 			fmt.Errorf(fmt.Sprintln("Não foi possivel encontrar uma constante válida."))
