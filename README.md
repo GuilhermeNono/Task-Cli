@@ -57,6 +57,10 @@ Creates a new task with a unique ID, the `Todo` status, and timestamps.
 task-cli add "Read a book"
 ```
 
+**Example:**
+Adding a new migration task to the tracker.
+![Add Task Example](https://i.imgur.com/b9pgKaP.png)
+
 ### `list [status]`
 
 Lists all tasks in ascending ID order.
@@ -73,6 +77,13 @@ task-cli list Todo
 task-cli list Done
 ```
 
+**Example:**
+Retrieving the full list of tracked tasks.
+![List Tasks Example](https://i.imgur.com/ot7iDWt.png)
+
+Filtering the output to show specific statuses (e.g., `Todo` and `Done`).
+![Filter Tasks Example](https://i.imgur.com/oA6Xr5e.png)
+
 ### `update <id> [description] --status <status>`
 
 Updates a task description and/or status.
@@ -84,6 +95,10 @@ task-cli update 2 --status InProgress
 
 > Status values are case-sensitive and follow the CLI’s internal status names.
 
+**Example:**
+Updating the description and moving the status to `Done` in a single command, followed by a list verification.
+![Update Task Example](https://i.imgur.com/WMocgBj.png)
+
 ### `delete <id>`
 
 Removes a task by ID.
@@ -91,6 +106,10 @@ Removes a task by ID.
 ```bash
 task-cli delete 1
 ```
+
+**Example:**
+Deleting a specific task by its ID and verifying the empty list.
+![Delete Task Example](https://i.imgur.com/M49TAdE.png)
 
 ### `version`
 
@@ -158,4 +177,3 @@ A GitHub Actions workflow is configured in `.github/workflows/go.yml`.
 Built as a hands-on CLI project to practice filesystem access, argument parsing, sorting, and structured Go application design. 💡
 
 This project is part of a coding exercise from [Roadmap.SH | Task-Tracker](https://roadmap.sh/projects/task-tracker)
-
